@@ -11,6 +11,8 @@ namespace embedpy {
 // Compuler Context
     class CompilerContext {
     public:
+        CompilerContext() : line(1) {}
+
         Token getToken();
 
         Token GetNextToken();
@@ -51,6 +53,8 @@ namespace embedpy {
         int NumVal;
 
         Token CurrentTok;
+
+        int line;
     };
 
 }

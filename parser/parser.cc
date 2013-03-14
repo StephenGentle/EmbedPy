@@ -21,7 +21,7 @@ namespace embedpy {
     }
 
     ExprAST *CompilerContext::Error(const std::string &msg) {
-        std::cerr << "Error: " << msg << std::endl;
+        std::cerr << "Error on line " << line << ": " << msg << std::endl;
         return nullptr;
     }
 
@@ -308,7 +308,7 @@ namespace embedpy {
         std::cerr << "embedpy> ";
         GetNextToken();
         
-        while (1) {
+        while (true) {
             std::cerr << "embedpy> ";
             switch (CurrentTok) {
                 case Token::eof:        return;

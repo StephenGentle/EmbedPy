@@ -21,6 +21,10 @@ namespace embedpy {
 Token CompilerContext::getToken() {
     static char lastChar = ' ';
 
+    if (lastChar == '\n') {
+        line++;
+    }
+
     // Skip whitespace
     while (isspace(lastChar)) {
         lastChar = getChar();
