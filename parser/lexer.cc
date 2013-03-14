@@ -53,7 +53,7 @@ Token CompilerContext::getToken() {
 
         NumVal = strtol(numStr.c_str(), nullptr, 0);
 
-        return Token::Number;
+        return Token::Integer;
     }
     
     // Comment to end of line
@@ -92,7 +92,10 @@ Token CompilerContext::getToken() {
 
         case ':':
             return Token::Colon;
-        
+       
+        case ',':
+            return Token::Comma;
+
         case '(':
             return Token::OpenParen;
 
@@ -124,6 +127,10 @@ void mainLoop()
 {
     CompilerContext c;
 
+    c.MainLoop();
+
+    return;
+    
     while (true) {
         std::cout << std::endl << "> ";
         
@@ -153,8 +160,8 @@ void mainLoop()
                 std::cout << "Identifier[" << c.getIdentifierStr() << "] ";
                 break;
 
-            case Token::Number:
-                std::cout << "Number[" << c.getNumVal() << "] ";
+            case Token::Integer:
+                std::cout << "Integer[" << c.getNumVal() << "] ";
                 break;
 
             case Token::Colon:
@@ -186,7 +193,7 @@ void mainLoop()
                 break;
 
             case Token::Slash:
-                std::cout < "Slash";
+                std::cout << "Slash";
                 break;
             
             case Token::Asterisk:

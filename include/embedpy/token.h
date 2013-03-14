@@ -10,7 +10,10 @@ namespace embedpy {
         Def, Extern, Return,
 
         // Primary
-        Identifier, Number, Invalid, StmtDelim, Colon, 
+        Identifier, Integer, Invalid,
+        
+        // Separartors
+        StmtDelim, Colon, Comma,
         
         // Operators
         AssignOp, EqualTo, Asterisk, Slash, Plus, Minus,

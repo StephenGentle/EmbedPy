@@ -1,6 +1,8 @@
 #ifndef EMBEDPY_AST_H
 #define EMBEDPY_AST_H
 
+#include <vector>
+
 #include "token.h"
 
 namespace embedpy {
@@ -39,8 +41,37 @@ namespace embedpy {
         ExprAST *LHS, *RHS;
     };
 
+    // AST Node for function call
+    class CallExprAST : public ExprAST {
+    public:
+        CallExprAST(const std::string &funcName, const std::vector<ExprAST*> &args)
+            : FuncName(funcName), Args(args) {}
 
+    private:
+        std::string FuncName;
+        std::vector<ExprAST*> Args;
+    };
 
+    // AST node for prototype
+    class PrototypeAST {
+    public:
+        PrototypeAST(const std::string &name, const std::vector<std::string> &args)
+            : Name(name), Args(args) {}
+
+    private:
+        std::string Name;
+        std::vector<std::string> Args;
+    };
+
+    class FunctionAST {
+    public:
+        FunctionAST(PrototypeAST *proto, ExprAST *body)
+            : Proto(proto), Body(body) {}
+
+    private:
+        PrototypeAST *Proto;
+        ExprAST *Body;
+    };
 }
 
 #endif

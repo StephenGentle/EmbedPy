@@ -13,13 +13,36 @@ namespace embedpy {
     public:
         Token getToken();
 
-        void GetNextToken();
+        Token GetNextToken();
 
         // Parse Functions
         ExprAST *ParseIntegerExpr();
+        ExprAST *ParseParenExpr();
+        ExprAST *ParseIdentifierExpr();
+        ExprAST *ParseExpression();
+        ExprAST *ParsePrimary();
+        ExprAST *ParseBinOpRHS(int exprPrec, ExprAST *lhs);
 
+        // Function/Prototype Parsing
+        PrototypeAST *ParsePrototype();
+        FunctionAST *ParseDefinition();
+        PrototypeAST *ParseExtern();
+        FunctionAST *ParseTopLevelExpr();
+
+        // Error functions
         ExprAST *Error(const std::string &msg);
-        
+        PrototypeAST *ErrorP(const std::string &msg);
+        FunctionAST *ErrorF(const std::string &msg);
+       
+        // Toplevel
+        void HandleDefinition();
+        void HandleExtern();
+        void HandleTopLevelExpression();
+        void MainLoop();
+
+        // Helper functions
+        int GetTokPrecedence();
+
         std::string getIdentifierStr() { return IdentifierStr; }
         int getNumVal() { return NumVal; }
 
