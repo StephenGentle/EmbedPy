@@ -2,9 +2,11 @@
 #define EMBEDPY_CONTEXT_H
 
 #include <string>
+#include <vector>
 
 #include "token.h"
 #include "ast.h"
+#include "error.h"
 
 namespace embedpy {
     
@@ -12,6 +14,7 @@ namespace embedpy {
     class CompilerContext {
     public:
         CompilerContext() : line(1) {}
+        virtual ~CompilerContext() {}
 
         Token getToken();
 
@@ -47,14 +50,27 @@ namespace embedpy {
 
         std::string getIdentifierStr() { return IdentifierStr; }
         int getNumVal() { return NumVal; }
+        std::vector<CompileError> getErrors() { return errors; }
 
-    private:
+        void setFileName(std::string fname) { fileName = fname; } 
+
+    protected:
         std::string IdentifierStr;
         int NumVal;
 
         Token CurrentTok;
 
         int line;
+        std::string fileName;
+
+        std::vector<CompileError> errors;
+    };
+
+    class InteractiveCompilerContext : public CompilerContext {
+    public:
+        InteractiveCompilerContext() {
+            setFileName("stdin");
+        }
     };
 
 }

@@ -21,7 +21,10 @@ namespace embedpy {
     }
 
     ExprAST *CompilerContext::Error(const std::string &msg) {
-        std::cerr << "Error on line " << line << ": " << msg << std::endl;
+        CompileError err(msg, fileName, line);
+        std::cerr << err.ToString() << std::endl;
+        errors.push_back(err);
+
         return nullptr;
     }
 
