@@ -296,24 +296,30 @@ namespace embedpy {
     void CompilerContext::HandleTopLevelExpression() {
         // Evaluate a top-level expression into an anonymous function.
         if (ParseTopLevelExpr()) {
-            fprintf(stderr, "Parsed a top-level expr\n");
+            std::cerr << "Parsed a top-level expr" << std::endl;
         } else {
             // Skip token for error recovery.
             GetNextToken();
         }
     }
 
-    /// top ::= definition | external | expression | ';'
+    /// top ::= definition | external | expression | ';' | NEWLINE
     void CompilerContext::MainLoop() {
         std::cerr << "embedpy> ";
         GetNextToken();
         
         while (true) {
-            std::cerr << "embedpy> ";
             switch (CurrentTok) {
-                case Token::eof:        return;
-                case Token::StmtDelim:  GetNextToken(); break;  // ignore top-level semicolons.
-                case Token::Def:        HandleDefinition(); break;
+                case Token::eof: return;
+
+                // ignore top-level semicolons and newlines
+                case Token::NewLine:
+                case Token::StmtDelim: 
+                    std::cerr << "embedpy> ";
+                    GetNextToken(); 
+                    break;
+                
+                case Token::FuncDef:    HandleDefinition(); break;
                 case Token::Extern:     HandleExtern(); break;
                 default:                HandleTopLevelExpression(); break;
             }

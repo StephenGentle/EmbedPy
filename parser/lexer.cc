@@ -23,6 +23,9 @@ Token CompilerContext::getToken() {
 
     if (lastChar == '\n') {
         line++;
+
+        lastChar = getChar();
+        return Token::NewLine;
     }
 
     // Skip whitespace
@@ -38,7 +41,7 @@ Token CompilerContext::getToken() {
             IdentifierStr += lastChar;
         }
 
-        if (IdentifierStr == "def") return Token::Def;
+        if (IdentifierStr == "def") return Token::FuncDef;
         if (IdentifierStr == "extern") return Token::Extern;
         if (IdentifierStr == "return") return Token::Return;
 
@@ -125,88 +128,3 @@ Token CompilerContext::getToken() {
 }
 }
 
-using namespace embedpy;
-
-void mainLoop()
-{
-    CompilerContext c;
-
-    c.MainLoop();
-
-    return;
-    
-    while (true) {
-        std::cout << std::endl << "> ";
-        
-        Token t = c.getToken();
-        
-        switch (t) {
-            case Token::eof: 
-                std::cout << "EOF" << std::endl;
-                return;
-
-            case Token::Def:
-                std::cout << "FunctionDef";
-                break;
-
-            case Token::Extern:
-                std::cout << "Extern";
-                break;
-
-            case Token::Return:
-                std::cout << "Return";
-
-            case Token::StmtDelim:
-                std::cout << "Delim ";
-                break;
-
-            case Token::Identifier:
-                std::cout << "Identifier[" << c.getIdentifierStr() << "] ";
-                break;
-
-            case Token::Integer:
-                std::cout << "Integer[" << c.getNumVal() << "] ";
-                break;
-
-            case Token::Colon:
-                std::cout << "Colon ";
-                break;
-            
-            case Token::AssignOp:
-                std::cout << "AssignOp ";
-                break;
-
-            case Token::EqualTo:
-                std::cout << "EqualTo ";
-                break;
-
-            case Token::OpenParen:
-                std::cout << "OpenParen ";
-                break;
-
-            case Token::CloseParen:
-                std::cout << "CloseParen ";
-                break;
-
-            case Token::Plus:
-                std::cout << "Plus ";
-                break;
-
-            case Token::Minus:
-                std::cout << "Minus ";
-                break;
-
-            case Token::Slash:
-                std::cout << "Slash";
-                break;
-            
-            case Token::Asterisk:
-                std::cout << "Asterisk";
-                break;
-
-            default:
-                std::cout << "Invalid ";
-                break;
-        }
-    }
-}

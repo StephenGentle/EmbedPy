@@ -7,13 +7,13 @@ namespace embedpy {
         eof,
 
         // Commands
-        Def, Extern, Return,
+        FuncDef, Extern, Return,
 
         // Primary
         Identifier, Integer, Invalid,
         
         // Separartors
-        StmtDelim, Colon, Comma,
+        NewLine, StmtDelim, Colon, Comma,
         
         // Operators
         AssignOp, EqualTo, Asterisk, Slash, Plus, Minus,
