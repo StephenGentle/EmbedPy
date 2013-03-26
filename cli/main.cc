@@ -8,7 +8,7 @@ int main()
 {
     std::cout << "EmbedPy Compiler" << std::endl;
 
-    embedpy::CompilerContext c;
+    embedpy::InteractiveCompilerContext c;
 
     c.MainLoop();
 
