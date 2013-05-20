@@ -1,0 +1,16 @@
+*~
+*.o
+*.lo
+*.la
+embedpy
+depcomp
+*.in
+Makefile
+configure
+config.log
+config.status
+config.h
+config.guess
+config.sub
+install-sh
+ltmain.sh

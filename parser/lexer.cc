@@ -11,11 +11,6 @@ inline bool isIntChar(char c) {
     return isdigit(c) || c == 'x';
 }
 
-// Temp - just get char from stdin
-inline char getChar() {
-    return getchar();
-}
-
 namespace embedpy {
 
 Token CompilerContext::getToken() {

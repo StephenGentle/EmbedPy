@@ -3,6 +3,8 @@
 
 #include <string>
 #include <vector>
+#include <cstdio>
+#include <fstream>
 
 #include "token.h"
 #include "ast.h"
@@ -15,6 +17,10 @@ namespace embedpy {
     public:
         CompilerContext() : line(1) {}
         virtual ~CompilerContext() {}
+
+        virtual char getChar() {
+            return '\0';
+        }
 
         Token getToken();
 
@@ -71,8 +77,24 @@ namespace embedpy {
         InteractiveCompilerContext() {
             setFileName("stdin");
         }
+
+        char getChar() {
+            return getchar();
+        }
     };
 
+    class FileCompilerContext : public CompilerContext {
+    public:
+       int compile(const std::string &input, const std::string &output);
+
+        char getChar() {
+            return in.get(); 
+        }
+
+    private:
+        std::fstream in;
+        std::fstream out;
+    };
 }
 
 #endif
