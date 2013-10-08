@@ -5,6 +5,7 @@
 #include <vector>
 #include <cstdio>
 #include <fstream>
+#include <stack>
 
 #include "token.h"
 #include "ast.h"
@@ -15,7 +16,7 @@ namespace embedpy {
 // Compuler Context
     class CompilerContext {
     public:
-        CompilerContext() : line(1), column(0), indentLevel(0), indentLength(0) {}
+        CompilerContext() : line(1), column(0), indentLengths({0}), indentLevel(0) {}
         virtual ~CompilerContext() {}
 
         virtual char getChar() {
@@ -72,8 +73,8 @@ namespace embedpy {
         int column;
         std::string fileName;
 
+        std::stack<int> indentLengths;
         int indentLevel;
-        int indentLength;
 
         std::vector<CompileError> errors;
     };

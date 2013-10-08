@@ -36,14 +36,10 @@ Token CompilerContext::getToken() {
 
             int indent = IdentifierStr.length();
 
-            if (indent > indentLength) {
-                indentLength = indent;
+            if (indent > indentLengths.top()) {
+                indentLengths.push(indent);
                 indentLevel++;
                 return Token::Indent;
-            } else if (indent < indentLevel) {
-                indentLength = indent;
-                indentLevel--; // TODO: Won't work for multiple level dedents
-                return Token::Dedent;
             }
         }
 
@@ -56,8 +52,15 @@ Token CompilerContext::getToken() {
         if (column == 1 && indentLevel != 0) {
             IdentifierStr = "";
             indentLevel--;
+            indentLengths.pop();
             return Token::Dedent;
         }
+    }
+
+    if (column < indentLengths.top()) {
+        indentLevel--;
+        indentLengths.pop();
+        return Token::Dedent;
     }
 
     // Get identifier
