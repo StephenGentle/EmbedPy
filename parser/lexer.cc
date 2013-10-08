@@ -89,6 +89,19 @@ Token CompilerContext::getToken() {
 
         return Token::Integer;
     }
+
+    // Parse strings
+    if (lastChar == '"' || lastChar == '\'') {
+        char openChar = lastChar;
+        IdentifierStr = std::string("");
+
+        while ((lastChar = getChar()) != openChar) {
+            IdentifierStr += lastChar;
+        }
+
+        lastChar = getChar();
+        return Token::String;
+    }
     
     // Comment to end of line
     if (lastChar == '#') {
@@ -182,6 +195,10 @@ void CompilerContext::Tokenise() {
 
             case Token::Integer:
                 std::cout << "Integer\t\t\t'" << NumVal << "'";
+                break;
+
+            case Token::String:
+                std::cout << "String\t\t\t'" << IdentifierStr << "'";
                 break;
 
             case Token::FuncDef:

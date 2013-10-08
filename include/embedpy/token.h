@@ -10,7 +10,7 @@ namespace embedpy {
         FuncDef, Extern, Return,
 
         // Primary
-        Identifier, Integer, Invalid,
+        Identifier, Invalid,
         
         // Separartors
         NewLine, StmtDelim, Colon, Comma, Indent, Dedent,
@@ -18,7 +18,9 @@ namespace embedpy {
         // Operators
         AssignOp, EqualTo, Asterisk, Slash, Plus, Minus,
 
-        OpenParen, CloseParen
+        OpenParen, CloseParen,
+
+        String, Integer
     };
     
 }
