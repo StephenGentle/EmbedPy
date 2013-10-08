@@ -7,8 +7,8 @@
 
 // Returns true if the character is allowed in an integer type
 // 0 to 9, A-F, x (for leading 0x on hex)
-inline bool isIntChar(char c) {
-    return isdigit(c) || c == 'x';
+inline bool isHexDigit(char c) {
+    return isdigit(c) || (c >= 'A' && c <= 'F');
 }
 
 namespace embedpy {
@@ -78,13 +78,43 @@ Token CompilerContext::getToken() {
         return Token::Identifier;
     }
 
-    // Get Number
-    // Numbers can be integer, hex ('0x1A') or octal (04)
-    if (isIntChar(lastChar)) {
+    // Get Hex or Octal number
+    // TODO: leading plus or minus signs
+    if (lastChar == '0') {
+        std::string numStr = std::string("0");
+
+        lastChar = getChar();
+        if (lastChar == 'x') {
+            numStr += lastChar;
+
+            while (isHexDigit(lastChar = getChar())) {
+                numStr += lastChar;
+            }
+
+        } else if(isdigit(lastChar) && lastChar - '0' < 8) {
+            // Octal
+            numStr += lastChar;
+    
+            while(isdigit(lastChar = getChar()) && lastChar - '0' < 8) {
+                numStr += lastChar;
+            }
+
+        } else {
+            NumVal = 0;
+            return Token::Integer;
+        }
+            
+        NumVal = strtol(numStr.c_str(), nullptr, 0);
+
+        return Token::Integer;
+    }
+
+    // Get normal decimal number
+    if (isdigit(lastChar)) {
         std::string numStr;
         numStr += lastChar;
 
-        while (isIntChar(lastChar = getChar())) {
+        while (isdigit(lastChar = getChar())) {
             numStr += lastChar;
         }
 
