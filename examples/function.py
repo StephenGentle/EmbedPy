@@ -4,4 +4,6 @@ def test():
 
     print i
 
+    return 5
+
 test()

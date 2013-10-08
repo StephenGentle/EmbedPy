@@ -26,6 +26,8 @@ namespace embedpy {
 
         Token GetNextToken();
 
+        void Tokenise();
+
         // Parse Functions
         ExprAST *ParseIntegerExpr();
         ExprAST *ParseParenExpr();
@@ -67,7 +69,10 @@ namespace embedpy {
         Token CurrentTok;
 
         int line;
+        int column;
         std::string fileName;
+
+        int indentLevel;
 
         std::vector<CompileError> errors;
     };
@@ -79,19 +84,24 @@ namespace embedpy {
         }
 
         char getChar() {
+            column++;
             return getchar();
         }
     };
 
     class FileCompilerContext : public CompilerContext {
     public:
-       int compile(const std::string &input, const std::string &output);
+        int Compile(const std::string &input, const std::string &output);
+        int TokeniseFile(const std::string &input);
 
         char getChar() {
+            column++;
             return in.get(); 
         }
 
     private:
+        bool LoadFile(const std::string &input);
+
         std::fstream in;
         std::fstream out;
     };

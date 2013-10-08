@@ -18,6 +18,7 @@ Token CompilerContext::getToken() {
 
     if (lastChar == '\n') {
         line++;
+        column = 0;
 
         lastChar = getChar();
         return Token::NewLine;
@@ -121,5 +122,81 @@ Token CompilerContext::getToken() {
     // Invalid Character
     return Token::Invalid;
 }
+
+void CompilerContext::Tokenise() {
+    Token t;
+    int endcol;
+
+    while (true) {
+        std::cout << line << "," << column;
+        
+        t = this->getToken();
+
+        if (t != Token::eof) {
+            endcol = column - 1;
+        } else {
+            endcol = column;
+        }
+
+        std::cout << "-" << line << "," << endcol << ":\t\t";
+
+        switch (t) {
+            case Token::NewLine:
+                std::cout << "NewLine" << "\t\t\t" << "'\\n'";
+                break;
+
+            case Token::Identifier:
+                std::cout << "Identifier\t\t'" << IdentifierStr << "'";
+                break;
+
+            case Token::Integer:
+                std::cout << "Integer\t\t\t'" << NumVal << "'";
+                break;
+
+            case Token::FuncDef:
+                std::cout << "FuncDef\t\t\t'" << IdentifierStr << "'";
+                break;
+
+            case Token::Return:
+                std::cout << "Return\t\t\t'" << IdentifierStr << "'";
+                break;
+
+            case Token::OpenParen:
+                std::cout << "OpenParen" << "\t\t" << "'('";
+                break;
+
+            case Token::CloseParen:
+                std::cout << "CloseParen" << "\t\t" << "')'";
+                break;
+
+            case Token::Colon:
+                std::cout << "Colon" << "\t\t\t" << "':'"; 
+                break;
+
+            case Token::AssignOp:
+                std::cout << "AssignOp" << "\t\t" << "'='";
+                break;
+
+            case Token::Plus:
+                std::cout << "Plus" << "\t\t\t" << "'+'";
+                break;
+
+            case Token::eof:
+                std::cout << "EOF" << "\t\t\t" << "''";
+                break;
+            
+            default:
+                std::cout << "Implement Me!";
+        }
+
+        std::cout << std::endl;
+        
+        if (t == Token::eof) {
+            return;
+        }
+
+    }
+}
+
 }
 
