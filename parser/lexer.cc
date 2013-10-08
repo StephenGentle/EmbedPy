@@ -14,7 +14,7 @@ inline bool isIntChar(char c) {
 namespace embedpy {
 
 Token CompilerContext::getToken() {
-    static char lastChar = ' ';
+    static char lastChar = getChar();
 
     if (lastChar == '\n') {
         line++;
@@ -25,15 +25,46 @@ Token CompilerContext::getToken() {
     }
 
     // Skip whitespace
-    while (isspace(lastChar)) {
-        lastChar = getChar();
+    if (isspace(lastChar)) {
+        IdentifierStr = lastChar;
+        
+        // Check if this is the start of the line
+        if (column == 1) {
+            while (isspace(lastChar = getChar())) {
+                IdentifierStr += lastChar;
+            }
+
+            int indent = IdentifierStr.length();
+
+            if (indent > indentLength) {
+                indentLength = indent;
+                indentLevel++;
+                return Token::Indent;
+            } else if (indent < indentLevel) {
+                indentLength = indent;
+                indentLevel--; // TODO: Won't work for multiple level dedents
+                return Token::Dedent;
+            }
+        }
+
+        // Ignore whitespace if we're not at the start of a line
+        while (isspace(lastChar)) {
+            lastChar = getChar();
+        }
+    } else {
+        // Check for dedent back to 0
+        if (column == 1 && indentLevel != 0) {
+            IdentifierStr = "";
+            indentLevel--;
+            return Token::Dedent;
+        }
     }
 
     // Get identifier
-    if (isalpha(lastChar)) {
+    if (isalpha(lastChar) || lastChar == '_') {
         IdentifierStr = lastChar;
 
-        while (isalnum(lastChar = getChar())) {
+        while (isalnum(lastChar = getChar()) || lastChar == '_') {
             IdentifierStr += lastChar;
         }
 
@@ -161,6 +192,14 @@ void CompilerContext::Tokenise() {
                 std::cout << "Return\t\t\t'" << IdentifierStr << "'";
                 break;
 
+            case Token::Indent:
+                std::cout << "Indent\t\t\t'" << IdentifierStr << "'";
+                break;
+
+            case Token::Dedent:
+                std::cout << "Dedent" << "\t\t\t" << "''";
+                break;
+
             case Token::OpenParen:
                 std::cout << "OpenParen" << "\t\t" << "'('";
                 break;
@@ -175,6 +214,10 @@ void CompilerContext::Tokenise() {
 
             case Token::AssignOp:
                 std::cout << "AssignOp" << "\t\t" << "'='";
+                break;
+
+            case Token::EqualTo:
+                std::cout << "EqualTo" << "\t\t\t" << "'=='";
                 break;
 
             case Token::Plus:

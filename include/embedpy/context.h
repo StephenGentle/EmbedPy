@@ -15,7 +15,7 @@ namespace embedpy {
 // Compuler Context
     class CompilerContext {
     public:
-        CompilerContext() : line(1) {}
+        CompilerContext() : line(1), column(0), indentLevel(0), indentLength(0) {}
         virtual ~CompilerContext() {}
 
         virtual char getChar() {
@@ -73,6 +73,7 @@ namespace embedpy {
         std::string fileName;
 
         int indentLevel;
+        int indentLength;
 
         std::vector<CompileError> errors;
     };
