@@ -148,13 +148,14 @@ Token CompilerContext::getToken() {
     
     // Comment to end of line
     if (lastChar == '#') {
-        while (lastChar != EOF && lastChar != '\n' && lastChar != '\r') {
-            lastChar = getChar();
+        std::string commentStr("#");
+
+        while ((lastChar = getChar()) != EOF && lastChar != '\n' && lastChar != '\r') {
+            commentStr += lastChar;
         }
 
-        if (lastChar != EOF && lastChar != '\0') {
-            return getToken();
-        }
+        IdentifierStr = commentStr;
+        return Token::Comment;
     }
     
     // Check for end of file
@@ -290,6 +291,10 @@ void CompilerContext::Tokenise() {
 
             case Token::eof:
                 std::cout << "EOF" << "\t\t\t" << "''";
+                break;
+
+            case Token::Comment:
+                std::cout << "Comment\t\t\t'" << IdentifierStr << "'";
                 break;
             
             default:

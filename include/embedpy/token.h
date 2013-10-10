@@ -4,7 +4,7 @@
 namespace embedpy {
 
     enum class Token {
-        eof,
+        eof, Comment,
 
         // Commands
         FuncDef, Extern, Return,
