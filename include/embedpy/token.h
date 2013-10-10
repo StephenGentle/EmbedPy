@@ -20,7 +20,7 @@ namespace embedpy {
         
         // Operators
         AssignOp, EqualTo, Asterisk, Slash, Plus, Minus,
-        PlusEquals, MinusEquals,
+        PlusEquals, MinusEquals, SlashEquals, AsteriskEquals,
 
         OpenParen, CloseParen,
 

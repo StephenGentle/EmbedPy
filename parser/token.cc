@@ -11,9 +11,13 @@ namespace embedpy {
         { Token::Minus, "-" },
         { Token::PlusEquals, "+=" },
         { Token::MinusEquals, "-=" },
+        { Token::SlashEquals, "/=" },
+        { Token::AsteriskEquals, "*=" },
         { Token::OpenParen, "(" },
         { Token::CloseParen, ")" },
-        { Token::Colon, ":" }
+        { Token::Colon, ":" },
+        { Token::StmtDelim, ";" },
+        { Token::Comma, "," }
     };
 
     std::map<Token, std::string> ep_tok_names = {
@@ -25,6 +29,8 @@ namespace embedpy {
         { Token::Minus, "Minus" },
         { Token::PlusEquals, "PlusEquals" },
         { Token::MinusEquals, "MinusEquals" },
+        { Token::SlashEquals, "SlashEquals" },
+        { Token::AsteriskEquals, "AsteriskEquals" },
         { Token::OpenParen, "OpenParen" },
         { Token::CloseParen, "CloseParen" }
     };

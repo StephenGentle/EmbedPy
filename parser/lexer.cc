@@ -209,9 +209,19 @@ Token CompilerContext::getToken() {
             return Token::Minus;
 
         case '/':
+            if (lastChar == '=') {
+                lastChar = getChar();
+                return Token::SlashEquals;
+            }
+
             return Token::Slash;
 
         case '*':
+            if (lastChar == '=') {
+                lastChar = getChar();
+                return Token::AsteriskEquals;
+            }
+
             return Token::Asterisk;
 
     }
@@ -277,6 +287,7 @@ void CompilerContext::Tokenise() {
             case Token::OpenParen:
             case Token::CloseParen:
             case Token::Colon:
+            case Token::Comma:
             case Token::AssignOp:
             case Token::EqualTo:
             case Token::Plus:
@@ -284,7 +295,9 @@ void CompilerContext::Tokenise() {
             case Token::Minus:
             case Token::MinusEquals: 
             case Token::Slash:
-            case Token::Asterisk: {
+            case Token::SlashEquals:
+            case Token::Asterisk: 
+            case Token::AsteriskEquals: {
                 std::string tokName = getTokenName(t);
                 std::string tabs("\t\t");
 
