@@ -79,7 +79,6 @@ Token CompilerContext::getToken() {
     }
 
     // Get Hex or Octal number
-    // TODO: leading plus or minus signs
     if (lastChar == '0') {
         std::string numStr = std::string("0");
 
@@ -194,9 +193,19 @@ Token CompilerContext::getToken() {
             return Token::CloseParen;
 
         case '+':
+            if (lastChar == '=') {
+                lastChar = getChar();
+                return Token::PlusEquals;
+            }
+
             return Token::Plus;
 
         case '-':
+            if (lastChar == '=') {
+                lastChar = getChar();
+                return Token::MinusEquals;
+            }
+
             return Token::Minus;
 
         case '/':
@@ -287,6 +296,18 @@ void CompilerContext::Tokenise() {
 
             case Token::Plus:
                 std::cout << "Plus" << "\t\t\t" << "'+'";
+                break;
+
+            case Token::PlusEquals:
+                std::cout << "PlusEquals" << "\t\t" << "'+='";
+                break;
+
+            case Token::Minus:
+                std::cout << "Minus" << "\t\t\t" << "'-'";
+                break;
+
+            case Token::MinusEquals:
+                std::cout << "MinusEquals" << "\t\t" << "'-='";
                 break;
 
             case Token::eof:
