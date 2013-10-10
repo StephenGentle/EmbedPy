@@ -3,7 +3,7 @@
 #include <cstdlib>
 #include <iostream>
 
-#include <context.h>
+#include "context.h"
 
 // Returns true if the character is allowed in an integer type
 // 0 to 9, A-F, x (for leading 0x on hex)
@@ -275,40 +275,26 @@ void CompilerContext::Tokenise() {
                 break;
 
             case Token::OpenParen:
-                std::cout << "OpenParen" << "\t\t" << "'('";
-                break;
-
             case Token::CloseParen:
-                std::cout << "CloseParen" << "\t\t" << "')'";
-                break;
-
             case Token::Colon:
-                std::cout << "Colon" << "\t\t\t" << "':'"; 
-                break;
-
             case Token::AssignOp:
-                std::cout << "AssignOp" << "\t\t" << "'='";
-                break;
-
             case Token::EqualTo:
-                std::cout << "EqualTo" << "\t\t\t" << "'=='";
-                break;
-
             case Token::Plus:
-                std::cout << "Plus" << "\t\t\t" << "'+'";
-                break;
-
             case Token::PlusEquals:
-                std::cout << "PlusEquals" << "\t\t" << "'+='";
-                break;
-
             case Token::Minus:
-                std::cout << "Minus" << "\t\t\t" << "'-'";
-                break;
+            case Token::MinusEquals: 
+            case Token::Slash:
+            case Token::Asterisk: {
+                std::string tokName = getTokenName(t);
+                std::string tabs("\t\t");
 
-            case Token::MinusEquals:
-                std::cout << "MinusEquals" << "\t\t" << "'-='";
+                if (tokName.length() < 8) {
+                    tabs += "\t";
+                }
+
+                std::cout << tokName << tabs << "'" << getOperator(t) << "'";
                 break;
+            }
 
             case Token::eof:
                 std::cout << "EOF" << "\t\t\t" << "''";
