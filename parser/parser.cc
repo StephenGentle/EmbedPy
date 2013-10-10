@@ -40,7 +40,7 @@ namespace embedpy {
 
     /// integerexpr ::= integer
     ExprAST *CompilerContext::ParseIntegerExpr() {
-        ExprAST *result = new IntegerExprAST(NumVal);
+        ExprAST *result = new IntegerExprAST(IntVal);
         GetNextToken();
         return result;
     }
@@ -192,6 +192,8 @@ namespace embedpy {
     /// prototype
     ///   ::= id '(' id* ')'
     PrototypeAST *CompilerContext::ParsePrototype() {
+        std::cout << "INFO: Parsing prototype" << std::endl;
+
         if (CurrentTok != Token::Identifier) {
             return ErrorP("Expected function name in prototype");
         }
@@ -233,6 +235,7 @@ namespace embedpy {
 
     /// definition ::= 'def' prototype ':' expression
     FunctionAST *CompilerContext::ParseDefinition() {
+        std::cout << "INFO: Handling function definition" << std::endl;
         // Skip the def keyword
         GetNextToken();
 

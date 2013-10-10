@@ -58,14 +58,16 @@ namespace embedpy {
         int GetTokPrecedence();
 
         std::string getIdentifierStr() { return IdentifierStr; }
-        int getNumVal() { return NumVal; }
+        int getIntVal() { return IntVal; }
+        double getDoubleVal() { return DoubleVal; }
         std::vector<CompileError> getErrors() { return errors; }
 
         void setFileName(std::string fname) { fileName = fname; } 
 
     protected:
         std::string IdentifierStr;
-        int NumVal;
+        int IntVal;
+        double DoubleVal;
 
         Token CurrentTok;
 

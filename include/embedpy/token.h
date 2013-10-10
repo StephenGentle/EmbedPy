@@ -20,7 +20,7 @@ namespace embedpy {
 
         OpenParen, CloseParen,
 
-        String, Integer
+        String, Integer, Double
     };
     
 }

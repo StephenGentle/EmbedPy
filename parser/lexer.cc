@@ -100,27 +100,37 @@ Token CompilerContext::getToken() {
             }
 
         } else {
-            NumVal = 0;
+            IntVal = 0;
             return Token::Integer;
         }
             
-        NumVal = strtol(numStr.c_str(), nullptr, 0);
+        IntVal = strtol(numStr.c_str(), nullptr, 0);
 
         return Token::Integer;
     }
 
-    // Get normal decimal number
+    // Get normal base 10 number - integer or double
     if (isdigit(lastChar)) {
+        bool dbl = false;
         std::string numStr;
         numStr += lastChar;
 
-        while (isdigit(lastChar = getChar())) {
+        while (isdigit(lastChar = getChar()) || lastChar == '.') {
             numStr += lastChar;
+
+            // Check if have a floating point value
+            if (lastChar == '.') {
+                dbl = true;
+            }
         }
 
-        NumVal = strtol(numStr.c_str(), nullptr, 0);
-
-        return Token::Integer;
+        if (dbl) {
+            DoubleVal = strtod(numStr.c_str(), nullptr);
+            return Token::Double;
+        } else {
+            IntVal = strtol(numStr.c_str(), nullptr, 0);
+            return Token::Integer;
+        }
     }
 
     // Parse strings
@@ -227,7 +237,11 @@ void CompilerContext::Tokenise() {
                 break;
 
             case Token::Integer:
-                std::cout << "Integer\t\t\t'" << NumVal << "'";
+                std::cout << "Integer\t\t\t'" << IntVal << "'";
+                break;
+
+            case Token::Double:
+                std::cout << "Double\t\t\t'" << DoubleVal << "'";
                 break;
 
             case Token::String:
