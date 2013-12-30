@@ -39,4 +39,8 @@ namespace embedpy {
         return 0;
     }
 
+    void FileCompilerContext::MainLoop() {
+        std::cout << "TODO: Compile" << std::endl;
+    }
+
 }

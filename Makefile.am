@@ -7,7 +7,8 @@ libembedpy_1_0_la_SOURCES=asm/asm.cc                            \
                           parser/parser.cc                      \
                           parser/lexer.cc                       \
                           parser/token.cc                       \
-                          common/fileCompilerContext.cc
+                          compiler/fileCompilerContext.cc       \
+                          compiler/interactiveCompilerContext.cc
 
 libembedpy_1_0_la_includedir=$(includedir)/embedpy
 libembedpy_1_0_la_include_HEADERS=  include/embedpy/ast.h       \

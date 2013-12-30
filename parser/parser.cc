@@ -270,6 +270,7 @@ namespace embedpy {
     /// toplevelexpr ::= expression
     FunctionAST *CompilerContext::ParseTopLevelExpr() {
         if (ExprAST *expr = ParseExpression()) {
+            // Create an anonymous function to run this in
             PrototypeAST *proto = new PrototypeAST("", std::vector<std::string>());
 
             return new FunctionAST(proto, expr);
@@ -309,27 +310,5 @@ namespace embedpy {
         }
     }
 
-    /// top ::= definition | external | expression | ';' | NEWLINE
-    void CompilerContext::MainLoop() {
-        std::cerr << "embedpy> ";
-        GetNextToken();
-        
-        while (true) {
-            switch (CurrentTok) {
-                case Token::eof: return;
-
-                // ignore top-level semicolons and newlines
-                case Token::NewLine:
-                case Token::StmtDelim: 
-                    std::cerr << "embedpy> ";
-                    GetNextToken(); 
-                    break;
-                
-                case Token::FuncDef:    HandleDefinition(); break;
-                case Token::Extern:     HandleExtern(); break;
-                default:                HandleTopLevelExpression(); break;
-            }
-        }
-    }
 }
 

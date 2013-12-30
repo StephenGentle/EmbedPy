@@ -52,7 +52,7 @@ namespace embedpy {
         void HandleDefinition();
         void HandleExtern();
         void HandleTopLevelExpression();
-        void MainLoop();
+        virtual void MainLoop() = 0;
 
         // Helper functions
         int GetTokPrecedence();
@@ -91,6 +91,8 @@ namespace embedpy {
             column++;
             return getchar();
         }
+
+        virtual void MainLoop();
     };
 
     class FileCompilerContext : public CompilerContext {
@@ -102,6 +104,8 @@ namespace embedpy {
             column++;
             return in.get(); 
         }
+
+        virtual void MainLoop();
 
     private:
         bool LoadFile(const std::string &input);
