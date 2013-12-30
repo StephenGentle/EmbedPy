@@ -16,9 +16,20 @@ namespace embedpy {
 Token CompilerContext::getToken() {
     static char lastChar = getChar();
 
+    // lastChar will be reset to 0 if we need to re-read. Usually in
+    // interactive mode
+    if (lastChar == 0) {
+        lastChar = getChar();
+    }
+
     if (lastChar == '\n') {
         line++;
         column = 0;
+
+        if (this->interactive) {
+            lastChar = 0;
+            return Token::NewLine;
+        }
 
         lastChar = getChar();
         return Token::NewLine;

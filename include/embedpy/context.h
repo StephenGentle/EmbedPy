@@ -62,7 +62,11 @@ namespace embedpy {
         double getDoubleVal() { return DoubleVal; }
         std::vector<CompileError> getErrors() { return errors; }
 
-        void setFileName(std::string fname) { fileName = fname; } 
+        void setFileName(std::string fname) { fileName = fname; }
+
+        void setInteractive(bool iactive) {
+            interactive = iactive;
+        }
 
     protected:
         std::string IdentifierStr;
@@ -79,12 +83,15 @@ namespace embedpy {
         int indentLevel;
 
         std::vector<CompileError> errors;
+
+        bool interactive;
     };
 
     class InteractiveCompilerContext : public CompilerContext {
     public:
         InteractiveCompilerContext() {
             setFileName("stdin");
+            setInteractive(true);
         }
 
         char getChar() {
@@ -97,6 +104,10 @@ namespace embedpy {
 
     class FileCompilerContext : public CompilerContext {
     public:
+        FileCompilerContext() {
+            setInteractive(false);    
+        }
+
         int Compile(const std::string &input, const std::string &output);
         int TokeniseFile(const std::string &input);
 
