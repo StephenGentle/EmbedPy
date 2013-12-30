@@ -10,7 +10,7 @@ namespace embedpy {
         eof, Comment,
 
         // Commands
-        FuncDef, Extern, Return,
+        Def, From, Class, Import, Extern, Return,
 
         // Primary
         Identifier, Invalid,

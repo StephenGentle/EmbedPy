@@ -22,18 +22,24 @@ namespace embedpy {
 
     std::map<Token, std::string> ep_tok_names = {
         { Token::AssignOp, "Equals" },
-        { Token::EqualTo, "EqualTo" },
         { Token::Asterisk, "Asterisk" },
-        { Token::Slash, "Slash" },
-        { Token::Plus, "Plus" },
-        { Token::Minus, "Minus" },
-        { Token::PlusEquals, "PlusEquals" },
-        { Token::MinusEquals, "MinusEquals" },
-        { Token::SlashEquals, "SlashEquals" },
         { Token::AsteriskEquals, "AsteriskEquals" },
-        { Token::OpenParen, "OpenParen" },
+        { Token::Class, "Class" },
         { Token::CloseParen, "CloseParen" },
-        { Token::Colon, "Colon" }
+        { Token::Colon, "Colon" },
+        { Token::Def, "Def" },
+        { Token::From, "From" },
+        { Token::EqualTo, "EqualTo" },
+        { Token::Indent, "Indent" },
+        { Token::Import, "Import" },
+        { Token::Minus, "Minus" },
+        { Token::MinusEquals, "MinusEquals" },
+        { Token::OpenParen, "OpenParen" },
+        { Token::Plus, "Plus" },
+        { Token::PlusEquals, "PlusEquals" },
+        { Token::Return, "Return" },
+        { Token::Slash, "Slash" },
+        { Token::SlashEquals, "SlashEquals" }
     };
 
     std::string getOperator(Token t) {

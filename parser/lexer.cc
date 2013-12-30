@@ -71,7 +71,10 @@ Token CompilerContext::getToken() {
             IdentifierStr += lastChar;
         }
 
-        if (IdentifierStr == "def") return Token::FuncDef;
+        if (IdentifierStr == "def") return Token::Def;
+        if (IdentifierStr == "class") return Token::Class;
+        if (IdentifierStr == "import") return Token::Import;
+        if (IdentifierStr == "from") return Token::From;
         if (IdentifierStr == "extern") return Token::Extern;
         if (IdentifierStr == "return") return Token::Return;
 
@@ -265,19 +268,14 @@ void CompilerContext::Tokenise() {
                 break;
 
             case Token::String:
-                std::cout << "String\t\t\t'" << IdentifierStr << "'";
-                break;
-
-            case Token::FuncDef:
-                std::cout << "FuncDef\t\t\t'" << IdentifierStr << "'";
-                break;
-
+            case Token::Def:
+            case Token::Class:
+            case Token::Import:
+            case Token::From:
             case Token::Return:
-                std::cout << "Return\t\t\t'" << IdentifierStr << "'";
-                break;
-
+            case Token::Comment:
             case Token::Indent:
-                std::cout << "Indent\t\t\t'" << IdentifierStr << "'";
+                std::cout << getTokenName(t) << "\t\t\t'" << IdentifierStr << "'";
                 break;
 
             case Token::Dedent:
@@ -313,10 +311,6 @@ void CompilerContext::Tokenise() {
                 std::cout << "EOF" << "\t\t\t" << "''";
                 break;
 
-            case Token::Comment:
-                std::cout << "Comment\t\t\t'" << IdentifierStr << "'";
-                break;
-            
             default:
                 std::cout << "Implement Me!";
         }
