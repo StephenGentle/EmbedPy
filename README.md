@@ -29,4 +29,9 @@ and then `./configure` to generate makefiles. Then you can just run `make`
 to build everything.
 
 You can test the tokeniser by running
-    ./embedpy -t examples/function.py
+
+    # ./embedpy -t examples/function.py
+
+and test the parser in interactive mode by just executing the frontend
+
+    # ./embedpy
