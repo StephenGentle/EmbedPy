@@ -32,7 +32,8 @@ namespace embedpy {
         { Token::SlashEquals, "SlashEquals" },
         { Token::AsteriskEquals, "AsteriskEquals" },
         { Token::OpenParen, "OpenParen" },
-        { Token::CloseParen, "CloseParen" }
+        { Token::CloseParen, "CloseParen" },
+        { Token::Colon, "Colon" }
     };
 
     std::string getOperator(Token t) {
