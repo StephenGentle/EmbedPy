@@ -29,6 +29,8 @@ namespace embedpy {
 
         void Tokenise();
 
+        void ParseStatement();
+
         // Parse Functions
         ExprAST *ParseIntegerExpr();
         ExprAST *ParseParenExpr();
@@ -51,12 +53,14 @@ namespace embedpy {
         // Toplevel
         void HandleDefinition();
         void HandleExtern();
+        void HandleClass();
         void HandleTopLevelExpression();
         virtual void MainLoop() = 0;
 
         // Helper functions
         int GetTokPrecedence();
 
+        // Get Parser State Accessors
         std::string getIdentifierStr() { return IdentifierStr; }
         int getIntVal() { return IntVal; }
         double getDoubleVal() { return DoubleVal; }
@@ -64,9 +68,13 @@ namespace embedpy {
 
         void setFileName(std::string fname) { fileName = fname; }
 
+        // Functions for interactive (REPL) parsing
         void setInteractive(bool iactive) {
             interactive = iactive;
         }
+        bool IsInteractive() { return interactive; }
+        virtual void DisplayPrompt() {}
+
 
     protected:
         std::string IdentifierStr;
@@ -85,6 +93,7 @@ namespace embedpy {
         std::vector<CompileError> errors;
 
         bool interactive;
+        bool insideConstruct;
     };
 
     class InteractiveCompilerContext : public CompilerContext {
@@ -97,6 +106,14 @@ namespace embedpy {
         char getChar() {
             column++;
             return getchar();
+        }
+
+        void DisplayPrompt() {
+            if (!insideConstruct) {
+                std::cout << "embedpy> ";
+            } else {
+                std::cout << "     ... ";
+            }
         }
 
         virtual void MainLoop();

@@ -19,7 +19,7 @@ namespace embedpy {
     }
         
 
-    int FileCompilerContext::Compile(const std::string &input, const std::string &output) {
+    int FileCompilerContext::Compile(const std::string &input, const std::string &) {
         if (!LoadFile(input)) {
             return 2;
         }

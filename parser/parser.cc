@@ -15,6 +15,10 @@ namespace embedpy {
     };
 
     Token CompilerContext::GetNextToken() {
+        if (IsInteractive() && CurrentTok == Token::NewLine) {
+            DisplayPrompt();
+        }
+
         CurrentTok = getToken();
 
         return CurrentTok;
@@ -36,6 +40,15 @@ namespace embedpy {
     FunctionAST *CompilerContext::ErrorF(const std::string &msg) {
         Error(msg);
         return nullptr;
+    }
+
+    // This is the entry point for an interactive statement
+    void CompilerContext::ParseStatement() {
+        switch (CurrentTok) {
+            case Token::Def:    HandleDefinition(); break;
+            case Token::Class:  HandleClass(); break;
+            default:            HandleTopLevelExpression(); break;
+        }
     }
 
     /// integerexpr ::= integer
@@ -250,13 +263,30 @@ namespace embedpy {
             return ErrorF("Expected ':' in function definition");
         }
 
+        // Set the context to be inside a function/loop/class
+        insideConstruct = true;
+
         // Skip past the colon
         GetNextToken();
 
+        // Skip past the NewLine if there is one
+        if (CurrentTok == Token::NewLine) {
+            // TODO: Handle the indent level
+            GetNextToken();
+        }
+
+        // Now we expect an indented block
+        if (CurrentTok != Token::Indent) {
+            insideConstruct = false;
+            return ErrorF("Expected an indented block");
+        }
+
         if (ExprAST *e = ParseExpression()) {
+            insideConstruct = false;
             return new FunctionAST(proto, e);
         }
 
+        insideConstruct = false;
         return nullptr;
     }
 
@@ -284,16 +314,23 @@ namespace embedpy {
     // =========================================
     void CompilerContext::HandleDefinition() {
         if (ParseDefinition()) {
-            std::cerr << "Parsed a function definition." << std::endl;
+            std::cerr << "DEBUG: Parsed a function definition." << std::endl;
         } else {
             // Skip token for error recovery.
-            GetNextToken();
+            if (!IsInteractive()) {
+                GetNextToken();
+            }
         }
+    }
+
+    void CompilerContext::HandleClass() {
+        std::cerr << "FIXME: Class parsing Unimplemented" << std::endl;
+        GetNextToken();
     }
 
     void CompilerContext::HandleExtern() {
         if (ParseExtern()) {
-            std::cerr << "Parsed an extern" << std::endl;
+            std::cerr << "DEBUG: Parsed an extern" << std::endl;
         } else {
             // Skip token for error recovery.
             GetNextToken();
@@ -303,7 +340,7 @@ namespace embedpy {
     void CompilerContext::HandleTopLevelExpression() {
         // Evaluate a top-level expression into an anonymous function.
         if (ParseTopLevelExpr()) {
-            std::cerr << "Parsed a top-level expr" << std::endl;
+            std::cerr << "DEBUG: Parsed a top-level expr" << std::endl;
         } else {
             // Skip token for error recovery.
             GetNextToken();

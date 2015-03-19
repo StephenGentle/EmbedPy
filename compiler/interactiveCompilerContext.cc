@@ -6,30 +6,28 @@ namespace embedpy {
 
     void InteractiveCompilerContext::MainLoop() {
 
-        // Display the prompt
-        std::cout << "embedpy> ";
-        
+        DisplayPrompt();
+
         // Loop until we get an EOF
         while (true) {
             GetNextToken();
 
             switch (CurrentTok) {
                 case Token::NewLine:
-                    // TODO: Execute
-                    std::cout << "embedpy> ";
+                case Token::eof:
                     break;
 
-                case Token::eof:
-                    std::cout << std::endl;
-                    return;
-                
                 default:
-                    // TODO: Parse
+                    // Parse the input and execute
+                    ParseStatement();
                     break;
             }
 
+            // Check if the user exited
+            if (CurrentTok == Token::eof) {
+                std::cout << std::endl;
+                return;
+            }
         }
-
     }
-
 }
