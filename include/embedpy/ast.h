@@ -58,6 +58,10 @@ namespace embedpy {
         PrototypeAST(const std::string &name, const std::vector<std::string> &args)
             : Name(name), Args(args) {}
 
+        // Accessors
+        const std::string &GetName() { return Name; }
+        const std::vector<std::string> &GetArgs() { return Args; }
+
     private:
         std::string Name;
         std::vector<std::string> Args;
@@ -67,6 +71,10 @@ namespace embedpy {
     public:
         FunctionAST(PrototypeAST *proto, ExprAST *body)
             : Proto(proto), Body(body) {}
+
+        // Accessors
+        const std::string &GetName() { return Proto->GetName(); }
+        const std::vector<std::string> &GetArgs() { return Proto->GetArgs(); }
 
     private:
         PrototypeAST *Proto;

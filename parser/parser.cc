@@ -47,6 +47,7 @@ namespace embedpy {
         switch (CurrentTok) {
             case Token::Def:    HandleDefinition(); break;
             case Token::Class:  HandleClass(); break;
+            case Token::Extern: HandleExtern(); break;
             default:            HandleTopLevelExpression(); break;
         }
     }
@@ -313,8 +314,13 @@ namespace embedpy {
     // TEMP FUNCTIONS
     // =========================================
     void CompilerContext::HandleDefinition() {
-        if (ParseDefinition()) {
-            std::cerr << "DEBUG: Parsed a function definition." << std::endl;
+        FunctionAST *func = ParseDefinition();
+
+        if (func != nullptr) {
+            std::cerr << "DEBUG: Parsed a function definition [" << func->GetName() << "]" << std::endl;
+
+            // TODO: Add to AST
+            delete func;
         } else {
             // Skip token for error recovery.
             if (!IsInteractive()) {
@@ -329,8 +335,13 @@ namespace embedpy {
     }
 
     void CompilerContext::HandleExtern() {
-        if (ParseExtern()) {
-            std::cerr << "DEBUG: Parsed an extern" << std::endl;
+        PrototypeAST *proto = ParseExtern();
+
+        if (proto != nullptr) {
+            std::cerr << "DEBUG: Parsed an extern [" << proto->GetName() << "]" << std::endl;
+
+            // TODO: Add to AST
+            delete proto;
         } else {
             // Skip token for error recovery.
             GetNextToken();
