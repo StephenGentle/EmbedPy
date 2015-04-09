@@ -16,10 +16,10 @@ namespace embedpy {
         Identifier, Invalid,
         
         // Separartors
-        NewLine, StmtDelim, Colon, Comma, Indent, Dedent,
+        NewLine, Semicolon, Colon, Comma, Indent, Dedent,
         
         // Operators
-        AssignOp, EqualTo, Asterisk, Slash, Plus, Minus,
+        Equals, EqualTo, Asterisk, Slash, Plus, Minus,
         PlusEquals, MinusEquals, SlashEquals, AsteriskEquals,
 
         OpenParen, CloseParen,

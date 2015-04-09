@@ -44,6 +44,7 @@ namespace embedpy {
 
     // This is the entry point for an interactive statement
     void CompilerContext::ParseStatement() {
+        std::cout << "DEBUG: ParseStatement: Token is " << getTokenName(CurrentTok) << std::endl;
         switch (CurrentTok) {
             case Token::Def:    HandleDefinition(); break;
             case Token::Class:  HandleClass(); break;
@@ -87,9 +88,19 @@ namespace embedpy {
         std::string idName = IdentifierStr;
         GetNextToken();
 
-        // TODO: Assignment?
-        if (CurrentTok != Token::OpenParen) {
-            return new VariableExprAST(idName);
+        // Handle assignment
+        if (CurrentTok == Token::Equals) {
+            GetNextToken();
+
+            // TODO: Handle. Just allow values at the moment
+            if (CurrentTok == Token::Integer || CurrentTok == Token::Double || CurrentTok == Token::String) {
+                return new VariableExprAST(idName); // TODO: Actually handle assignment
+            }
+
+            return Error("Expected Value after equals");
+
+        } else if (CurrentTok != Token::OpenParen) {
+            return new VariableExprAST(idName); // TODO: What is this doing?
         }
 
         // Function call - ignore the open paren
@@ -120,8 +131,7 @@ namespace embedpy {
             }
         }
 
-        // Throw away the close paren
-        GetNextToken();
+        std::cout << "Parsed a function call" << std::endl;
         
         return new CallExprAST(idName, args);
     }
@@ -166,6 +176,31 @@ namespace embedpy {
         }
 
         return ParseBinOpRHS(0, LHS);
+    }
+
+    /// simple_expression ::= expression (';' expression)* [';'] NEWLINE
+    ExprAST *CompilerContext::ParseSimpleExpression() {
+        ExprAST *expr = ParseExpression();
+
+        if (!expr) {
+            return nullptr;
+        }
+
+        // Look for newline or semicolon
+        GetNextToken();
+
+        // Just skip the semicolon for now
+        // TODO: Multiple Expressions
+        if (CurrentTok == Token::Semicolon) {
+            GetNextToken();
+        }
+
+        if (CurrentTok == Token::NewLine) {
+            std::cerr << "INFO: Parsed a simple statement" << std::endl;
+            return expr;
+        } else {
+            return Error("Unexpected token after expression");
+        }
     }
 
     /// binoprhs
@@ -270,26 +305,12 @@ namespace embedpy {
         // Skip past the colon
         GetNextToken();
 
-        // Skip past the NewLine if there is one
-        if (CurrentTok == Token::NewLine) {
-            // TODO: Handle the indent level
-            GetNextToken();
-        }
-
-        // Now we expect an indented block
-        if (CurrentTok != Token::Indent) {
-            insideConstruct = false;
-            return ErrorF("Expected an indented block");
-        }
-
-        // Skip past indent
-        GetNextToken();
-
-        if (ExprAST *e = ParseExpression()) {
+        if(ExprAST *e = ParseSuite()) {
             insideConstruct = false;
             return new FunctionAST(proto, e);
         }
 
+        // Error
         insideConstruct = false;
         return nullptr;
     }
@@ -311,6 +332,50 @@ namespace embedpy {
         }
 
         return nullptr;
+    }
+
+    /// suite ::= simple_expression | NEWLINE INDENT expression+ DEDENT
+    ExprAST *CompilerContext::ParseSuite() {
+        // Check if this is a single line function
+        if (CurrentTok != Token::NewLine) {
+            insideConstruct = false;
+            return ParseSimpleExpression();
+        }
+
+        // Skip past the NewLine and check we have an indent
+        GetNextToken();
+
+        if (CurrentTok != Token::Indent) {
+            return Error("Expected an indented block");
+        }
+
+        // Skip past indent
+        GetNextToken();
+
+        std::cerr << "DEBUG: Suite - Parsing statements" << std::endl;
+
+        ExprAST *e = nullptr;
+        while (CurrentTok != Token::Dedent) {
+            // Ignore blank lines
+            if (CurrentTok == Token::NewLine) {
+                GetNextToken();
+                continue;
+            }
+
+            // TODO: Parse compound expressions too
+            if (!(e = ParseSimpleExpression())) {
+                return nullptr;
+            }
+
+            GetNextToken();
+        }
+
+        // TODO: Problem with interactive mode - dedent won't appear until getting a token
+        // at a lower level
+        std::cerr << "DEBUG: Suite successful" << std::endl;
+
+        // TODO: Don't just return the last expression
+        return e;
     }
 
     // =========================================

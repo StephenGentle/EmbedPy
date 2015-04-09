@@ -39,11 +39,15 @@ namespace embedpy {
         ExprAST *ParsePrimary();
         ExprAST *ParseBinOpRHS(int exprPrec, ExprAST *lhs);
 
+        // Expressions
+        ExprAST *ParseSimpleExpression();
+
         // Function/Prototype Parsing
         PrototypeAST *ParsePrototype();
         FunctionAST *ParseDefinition();
         PrototypeAST *ParseExtern();
         FunctionAST *ParseTopLevelExpr();
+        ExprAST *ParseSuite();
 
         // Error functions
         ExprAST *Error(const std::string &msg);

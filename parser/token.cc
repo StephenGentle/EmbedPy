@@ -3,7 +3,7 @@
 namespace embedpy {
 
     std::map<Token, std::string> ep_operators = { 
-        { Token::AssignOp, "=" },
+        { Token::Equals, "=" },
         { Token::EqualTo, "==" },
         { Token::Asterisk, "*" },
         { Token::Slash, "/" },
@@ -16,21 +16,23 @@ namespace embedpy {
         { Token::OpenParen, "(" },
         { Token::CloseParen, ")" },
         { Token::Colon, ":" },
-        { Token::StmtDelim, ";" },
+        { Token::Semicolon, ";" },
         { Token::Comma, "," }
     };
 
     std::map<Token, std::string> ep_tok_names = {
-        { Token::AssignOp, "Equals" },
+        { Token::Equals, "Equals" },
         { Token::Asterisk, "Asterisk" },
         { Token::AsteriskEquals, "AsteriskEquals" },
         { Token::Class, "Class" },
         { Token::CloseParen, "CloseParen" },
         { Token::Colon, "Colon" },
+        { Token::Semicolon, "Semicolon" },
         { Token::Def, "Def" },
         { Token::From, "From" },
         { Token::EqualTo, "EqualTo" },
         { Token::Indent, "Indent" },
+        { Token::Dedent, "Dedent" },
         { Token::Import, "Import" },
         { Token::Minus, "Minus" },
         { Token::MinusEquals, "MinusEquals" },
@@ -40,7 +42,10 @@ namespace embedpy {
         { Token::Return, "Return" },
         { Token::Slash, "Slash" },
         { Token::SlashEquals, "SlashEquals" },
-        { Token::NewLine, "NewLine" }
+        { Token::NewLine, "NewLine" },
+        { Token::Identifier, "Identifier" },
+        { Token::Integer, "Integer" },
+        { Token::String, "String" }
     };
 
     std::string getOperator(Token t) {

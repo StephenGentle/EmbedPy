@@ -183,7 +183,7 @@ Token CompilerContext::getToken() {
             return Token::EqualTo;
         }
 
-        return Token::AssignOp;
+        return Token::Equals;
     }
 
     // Get the next char for next time
@@ -192,7 +192,7 @@ Token CompilerContext::getToken() {
 
     switch (thisChar) {
         case ';':
-            return Token::StmtDelim;
+            return Token::Semicolon;
 
         case ':':
             return Token::Colon;
@@ -262,9 +262,6 @@ void CompilerContext::Tokenise() {
         std::cout << "-" << line << "," << endcol << ":\t\t";
 
         switch (t) {
-            case Token::NewLine:
-                std::cout << "NewLine" << "\t\t\t" << "'\\n'";
-                break;
 
             case Token::Identifier:
                 std::cout << "Identifier\t\t'" << IdentifierStr << "'";
@@ -278,6 +275,7 @@ void CompilerContext::Tokenise() {
                 std::cout << "Double\t\t\t'" << DoubleVal << "'";
                 break;
 
+            case Token::NewLine:
             case Token::String:
             case Token::Def:
             case Token::Class:
@@ -286,18 +284,15 @@ void CompilerContext::Tokenise() {
             case Token::Return:
             case Token::Comment:
             case Token::Indent:
-                std::cout << getTokenName(t) << "\t\t\t'" << IdentifierStr << "'";
-                break;
-
             case Token::Dedent:
-                std::cout << "Dedent" << "\t\t\t" << "''";
+                std::cout << getTokenName(t) << "\t\t\t'" << IdentifierStr << "'";
                 break;
 
             case Token::OpenParen:
             case Token::CloseParen:
             case Token::Colon:
             case Token::Comma:
-            case Token::AssignOp:
+            case Token::Equals:
             case Token::EqualTo:
             case Token::Plus:
             case Token::PlusEquals:
