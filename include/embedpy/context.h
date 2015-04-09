@@ -16,7 +16,7 @@ namespace embedpy {
 // Compuler Context
     class CompilerContext {
     public:
-        CompilerContext() : line(1), column(0), indentLengths({0}), indentLevel(0) {}
+        CompilerContext() : line(1), column(0), indentLengths({0}), indentLevel(0), insideConstruct(false) {}
         virtual ~CompilerContext() {}
 
         virtual char getChar() {

@@ -39,7 +39,8 @@ namespace embedpy {
         { Token::PlusEquals, "PlusEquals" },
         { Token::Return, "Return" },
         { Token::Slash, "Slash" },
-        { Token::SlashEquals, "SlashEquals" }
+        { Token::SlashEquals, "SlashEquals" },
+        { Token::NewLine, "NewLine" }
     };
 
     std::string getOperator(Token t) {
