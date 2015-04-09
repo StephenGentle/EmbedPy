@@ -17,7 +17,8 @@ namespace embedpy {
         { Token::CloseParen, ")" },
         { Token::Colon, ":" },
         { Token::Semicolon, ";" },
-        { Token::Comma, "," }
+        { Token::Comma, "," },
+        { Token::NewLine, "\\n" }
     };
 
     std::map<Token, std::string> ep_tok_names = {

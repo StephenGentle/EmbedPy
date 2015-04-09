@@ -275,7 +275,6 @@ void CompilerContext::Tokenise() {
                 std::cout << "Double\t\t\t'" << DoubleVal << "'";
                 break;
 
-            case Token::NewLine:
             case Token::String:
             case Token::Def:
             case Token::Class:
@@ -288,9 +287,11 @@ void CompilerContext::Tokenise() {
                 std::cout << getTokenName(t) << "\t\t\t'" << IdentifierStr << "'";
                 break;
 
+            case Token::NewLine:
             case Token::OpenParen:
             case Token::CloseParen:
             case Token::Colon:
+            case Token::Semicolon:
             case Token::Comma:
             case Token::Equals:
             case Token::EqualTo:
