@@ -282,6 +282,9 @@ namespace embedpy {
             return ErrorF("Expected an indented block");
         }
 
+        // Skip past indent
+        GetNextToken();
+
         if (ExprAST *e = ParseExpression()) {
             insideConstruct = false;
             return new FunctionAST(proto, e);
