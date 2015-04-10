@@ -40,7 +40,21 @@ namespace embedpy {
     }
 
     void FileCompilerContext::MainLoop() {
-        std::cout << "TODO: Compile" << std::endl;
-    }
+        while (true) {
+            GetNextToken();
 
+            switch (CurrentTok) {
+                case Token::eof:
+                    return;
+
+                case Token::NewLine:
+                    break;
+
+                default:
+                    ParseStatement();
+                    break;
+            }
+        }
+    }
 }
+
